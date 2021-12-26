@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Models
 {
@@ -31,6 +32,9 @@ namespace Models
         [RegularExpression("\\d+")]
         [Range(20,180)]
         public int SnagaMotora { get; set; }
+        public List<Instruktor> ListaInstruktora { get; set;}
+
+        public List<Vozilo> ListaVozila { get; set; }
 
 
     }
