@@ -11,6 +11,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace WEB_projekat
 {
@@ -26,6 +28,25 @@ namespace WEB_projekat
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<AutoSkolaContext>(options=>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("AutoSkola"));
+            });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CORS",builder=>
+                {
+                    builder.WithOrigins(new string[]
+                    {
+                        "http://localhost:8080",
+                        "https://localhost:8080",
+                        "http://127.0.0.1:8080",
+                        "https://127.0.0.1:8080"
+                    })
+                    .AllowAnyHeader()
+                    .AllowAnyMethod(); //(GRUD)
+                });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -47,6 +68,8 @@ namespace WEB_projekat
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            
+            app.UseCors("CORS");  //koristi cors na nivou aplikacije
 
             app.UseAuthorization();
 
