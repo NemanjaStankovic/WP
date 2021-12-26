@@ -10,7 +10,7 @@ namespace Models
         [Required]
         [RegularExpression("\\d+")]
         [MaxLength(13)]
-        public int JMBG { get; set; }
+        public long JMBG { get; set; }
 
         [RegularExpression("\\d+")]
         [Required]
