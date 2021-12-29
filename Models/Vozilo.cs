@@ -17,6 +17,10 @@ namespace Models
         [MaxLength(15)]
         public string Model { get; set; }
 
+        [Required]
+        [MaxLength(8)]
+        public string RegistarskaTablica { get; set; }
+
         [RegularExpression("\\w+")]
         [Required]
         public string VrstaVozila { get; set; } //kamion,auto,motocikl
@@ -32,10 +36,8 @@ namespace Models
         [RegularExpression("\\d+")]
         [Range(20,180)]
         public int SnagaMotora { get; set; }
-        public List<Instruktor> ListaInstruktora { get; set;}
+        public List<InstruktorVozilo> ListaInstruktora { get; set;}
 
-        public List<Vozilo> ListaVozila { get; set; }
-
-
+        public List<Polaznik> ListaPolaznika { get; set; }
     }
 }

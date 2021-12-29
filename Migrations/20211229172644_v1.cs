@@ -7,7 +7,7 @@ namespace WEB_projekat.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Instruktor",
+                name: "Instruktori",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -20,7 +20,7 @@ namespace WEB_projekat.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Instruktor", x => x.ID);
+                    table.PrimaryKey("PK_Instruktori", x => x.ID);
                 });
 
             migrationBuilder.CreateTable(
@@ -31,17 +31,37 @@ namespace WEB_projekat.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Marka = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Model = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: true),
+                    RegistarskaTablica = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     VrstaVozila = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GodinaProizvodnje = table.Column<int>(type: "int", nullable: false),
                     ZapreminaMotora = table.Column<int>(type: "int", nullable: false),
-                    SnagaMotora = table.Column<int>(type: "int", nullable: false),
-                    VoziloID = table.Column<int>(type: "int", nullable: true)
+                    SnagaMotora = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Vozilo", x => x.ID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "InstruktorVozilo",
+                columns: table => new
+                {
+                    ID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    InstruktorID = table.Column<int>(type: "int", nullable: true),
+                    VoziloID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InstruktorVozilo", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Vozilo_Vozilo_VoziloID",
+                        name: "FK_InstruktorVozilo_Instruktori_InstruktorID",
+                        column: x => x.InstruktorID,
+                        principalTable: "Instruktori",
+                        principalColumn: "ID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_InstruktorVozilo_Vozilo_VoziloID",
                         column: x => x.VoziloID,
                         principalTable: "Vozilo",
                         principalColumn: "ID",
@@ -49,36 +69,12 @@ namespace WEB_projekat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InstruktorVozilo",
-                columns: table => new
-                {
-                    ListaInstruktoraID = table.Column<int>(type: "int", nullable: false),
-                    VozilaID = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_InstruktorVozilo", x => new { x.ListaInstruktoraID, x.VozilaID });
-                    table.ForeignKey(
-                        name: "FK_InstruktorVozilo_Instruktor_ListaInstruktoraID",
-                        column: x => x.ListaInstruktoraID,
-                        principalTable: "Instruktor",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_InstruktorVozilo_Vozilo_VozilaID",
-                        column: x => x.VozilaID,
-                        principalTable: "Vozilo",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Polaznik",
+                name: "Polaznici",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    JMBG = table.Column<int>(type: "int", maxLength: 13, nullable: false),
+                    JMBG = table.Column<long>(type: "bigint", maxLength: 13, nullable: false),
                     BrLicneKarte = table.Column<int>(type: "int", maxLength: 9, nullable: false),
                     PolozioTest = table.Column<bool>(type: "bit", nullable: false),
                     PolozioVoznju = table.Column<bool>(type: "bit", nullable: false),
@@ -89,15 +85,15 @@ namespace WEB_projekat.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Polaznik", x => x.ID);
+                    table.PrimaryKey("PK_Polaznici", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Polaznik_Instruktor_InstruktorID",
+                        name: "FK_Polaznici_Instruktori_InstruktorID",
                         column: x => x.InstruktorID,
-                        principalTable: "Instruktor",
+                        principalTable: "Instruktori",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Polaznik_Vozilo_VoziloID",
+                        name: "FK_Polaznici_Vozilo_VoziloID",
                         column: x => x.VoziloID,
                         principalTable: "Vozilo",
                         principalColumn: "ID",
@@ -105,23 +101,23 @@ namespace WEB_projekat.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_InstruktorVozilo_VozilaID",
+                name: "IX_InstruktorVozilo_InstruktorID",
                 table: "InstruktorVozilo",
-                column: "VozilaID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Polaznik_InstruktorID",
-                table: "Polaznik",
                 column: "InstruktorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Polaznik_VoziloID",
-                table: "Polaznik",
+                name: "IX_InstruktorVozilo_VoziloID",
+                table: "InstruktorVozilo",
                 column: "VoziloID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vozilo_VoziloID",
-                table: "Vozilo",
+                name: "IX_Polaznici_InstruktorID",
+                table: "Polaznici",
+                column: "InstruktorID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Polaznici_VoziloID",
+                table: "Polaznici",
                 column: "VoziloID");
         }
 
@@ -131,10 +127,10 @@ namespace WEB_projekat.Migrations
                 name: "InstruktorVozilo");
 
             migrationBuilder.DropTable(
-                name: "Polaznik");
+                name: "Polaznici");
 
             migrationBuilder.DropTable(
-                name: "Instruktor");
+                name: "Instruktori");
 
             migrationBuilder.DropTable(
                 name: "Vozilo");

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Models
 {
@@ -27,8 +28,11 @@ namespace Models
         [MaxLength(9)]
         public int Telefon { get; set; } 
         public string Adresa { get; set; }
-
+        
+        [JsonIgnore] 
         public List<Polaznik> Polaznici{ get; set; }
-        public List<Vozilo> Vozila{ get; set; }
+
+        [JsonIgnore] 
+        public List<InstruktorVozilo> Vozila{ get; set; }
     }
 }

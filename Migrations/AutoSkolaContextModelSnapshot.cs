@@ -19,21 +19,6 @@ namespace WEB_projekat.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("InstruktorVozilo", b =>
-                {
-                    b.Property<int>("ListaInstruktoraID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VozilaID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ListaInstruktoraID", "VozilaID");
-
-                    b.HasIndex("VozilaID");
-
-                    b.ToTable("InstruktorVozilo");
-                });
-
             modelBuilder.Entity("Models.Instruktor", b =>
                 {
                     b.Property<int>("ID")
@@ -64,6 +49,28 @@ namespace WEB_projekat.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Instruktori");
+                });
+
+            modelBuilder.Entity("Models.InstruktorVozilo", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("InstruktorID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("VoziloID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("InstruktorID");
+
+                    b.HasIndex("VoziloID");
+
+                    b.ToTable("InstruktorVozilo");
                 });
 
             modelBuilder.Entity("Models.Polaznik", b =>
@@ -131,10 +138,12 @@ namespace WEB_projekat.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<int>("SnagaMotora")
-                        .HasColumnType("int");
+                    b.Property<string>("RegistarskaTablica")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
-                    b.Property<int?>("VoziloID")
+                    b.Property<int>("SnagaMotora")
                         .HasColumnType("int");
 
                     b.Property<string>("VrstaVozila")
@@ -146,24 +155,22 @@ namespace WEB_projekat.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("VoziloID");
-
                     b.ToTable("Vozilo");
                 });
 
-            modelBuilder.Entity("InstruktorVozilo", b =>
+            modelBuilder.Entity("Models.InstruktorVozilo", b =>
                 {
-                    b.HasOne("Models.Instruktor", null)
-                        .WithMany()
-                        .HasForeignKey("ListaInstruktoraID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Models.Instruktor", "Instruktor")
+                        .WithMany("Vozila")
+                        .HasForeignKey("InstruktorID");
 
-                    b.HasOne("Models.Vozilo", null)
-                        .WithMany()
-                        .HasForeignKey("VozilaID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Models.Vozilo", "Vozilo")
+                        .WithMany("ListaInstruktora")
+                        .HasForeignKey("VoziloID");
+
+                    b.Navigation("Instruktor");
+
+                    b.Navigation("Vozilo");
                 });
 
             modelBuilder.Entity("Models.Polaznik", b =>
@@ -173,7 +180,7 @@ namespace WEB_projekat.Migrations
                         .HasForeignKey("InstruktorID");
 
                     b.HasOne("Models.Vozilo", "Vozilo")
-                        .WithMany()
+                        .WithMany("ListaPolaznika")
                         .HasForeignKey("VoziloID");
 
                     b.Navigation("Instruktor");
@@ -181,21 +188,18 @@ namespace WEB_projekat.Migrations
                     b.Navigation("Vozilo");
                 });
 
-            modelBuilder.Entity("Models.Vozilo", b =>
-                {
-                    b.HasOne("Models.Vozilo", null)
-                        .WithMany("ListaVozila")
-                        .HasForeignKey("VoziloID");
-                });
-
             modelBuilder.Entity("Models.Instruktor", b =>
                 {
                     b.Navigation("Polaznici");
+
+                    b.Navigation("Vozila");
                 });
 
             modelBuilder.Entity("Models.Vozilo", b =>
                 {
-                    b.Navigation("ListaVozila");
+                    b.Navigation("ListaInstruktora");
+
+                    b.Navigation("ListaPolaznika");
                 });
 #pragma warning restore 612, 618
         }

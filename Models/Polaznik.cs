@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Models
 {
@@ -28,7 +29,11 @@ namespace Models
         [MaxLength(15)]
         [Required]
         public string Prezime { get; set; }
+
+        [JsonIgnore]
         public Vozilo Vozilo { get; set; }
+                
+        [JsonIgnore]        
         public Instruktor Instruktor { get; set; }
     }
 }

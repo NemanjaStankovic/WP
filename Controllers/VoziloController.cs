@@ -1,6 +1,8 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Models;
 namespace WEBPROJEKAT.Controllers // ?????????????
 {
@@ -15,11 +17,17 @@ namespace WEBPROJEKAT.Controllers // ?????????????
             Context=context;
         }
 
-        [Route("Prikaz")]
+        [Route("Prikaz/{br_tablice}")]
         [HttpGet]
-        public async Task<ActionResult> Preuzmi()
+        public async Task<ActionResult> Preuzmi(string br_tablice)
         {
-            return Ok("Dobro"); // I M P L E M E N T I R A J
+            var auta=Context.Vozila
+                     .Include(p => p.ListaPolaznika.Where(p=>p.Vozilo.RegistarskaTablica==br_tablice))
+                     .Include(p=>p.ListaInstruktora);
+            var auto=await auta./*Where(p=>p.RegistarskaTablica==br_tablice).*/ToListAsync();
+            return Ok(auto);
+            
+
             
         }
 
