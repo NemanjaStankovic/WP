@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace Models
 {
@@ -36,8 +37,10 @@ namespace Models
         [RegularExpression("\\d+")]
         [Range(20,180)]
         public int SnagaMotora { get; set; }
-        public List<InstruktorVozilo> ListaInstruktora { get; set;}
-
+        //[JsonIgnore]
         public List<Polaznik> ListaPolaznika { get; set; }
+
+        [JsonIgnore]
+        public List<InstruktorVozilo> ListaInstruktora { get; set;}
     }
 }

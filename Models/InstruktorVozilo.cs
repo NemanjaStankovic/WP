@@ -6,7 +6,11 @@ namespace Models
     {
         [Key]
         public int ID { get; set; }
+        
+        [JsonIgnore]
         public Instruktor Instruktor { get; set; }
+
+        [JsonIgnore]
         public Vozilo Vozilo { get; set; }
     }
 }

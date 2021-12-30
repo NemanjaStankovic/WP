@@ -25,14 +25,14 @@ namespace Models
         public int GodinaRodjena { get; set; }
 
         [RegularExpression("\\d+")]
-        [MaxLength(9)]
+        [Range(0,999999999)]
         public int Telefon { get; set; } 
         public string Adresa { get; set; }
         
-        [JsonIgnore] 
+        //[JsonIgnore] 
         public List<Polaznik> Polaznici{ get; set; }
 
-        [JsonIgnore] 
+       // [JsonIgnore] 
         public List<InstruktorVozilo> Vozila{ get; set; }
     }
 }
