@@ -15,7 +15,7 @@ namespace WEB_projekat.Migrations
                     Ime = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Prezime = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     GodinaRodjena = table.Column<int>(type: "int", nullable: false),
-                    Telefon = table.Column<int>(type: "int", maxLength: 9, nullable: false),
+                    Telefon = table.Column<int>(type: "int", nullable: false),
                     Adresa = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -43,7 +43,7 @@ namespace WEB_projekat.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "InstruktorVozilo",
+                name: "Veza",
                 columns: table => new
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
@@ -53,15 +53,15 @@ namespace WEB_projekat.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_InstruktorVozilo", x => x.ID);
+                    table.PrimaryKey("PK_Veza", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_InstruktorVozilo_Instruktori_InstruktorID",
+                        name: "FK_Veza_Instruktori_InstruktorID",
                         column: x => x.InstruktorID,
                         principalTable: "Instruktori",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_InstruktorVozilo_Vozilo_VoziloID",
+                        name: "FK_Veza_Vozilo_VoziloID",
                         column: x => x.VoziloID,
                         principalTable: "Vozilo",
                         principalColumn: "ID",
@@ -80,54 +80,42 @@ namespace WEB_projekat.Migrations
                     PolozioVoznju = table.Column<bool>(type: "bit", nullable: false),
                     Ime = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     Prezime = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    VoziloID = table.Column<int>(type: "int", nullable: true),
-                    InstruktorID = table.Column<int>(type: "int", nullable: true)
+                    VezaID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Polaznici", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_Polaznici_Instruktori_InstruktorID",
-                        column: x => x.InstruktorID,
-                        principalTable: "Instruktori",
-                        principalColumn: "ID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Polaznici_Vozilo_VoziloID",
-                        column: x => x.VoziloID,
-                        principalTable: "Vozilo",
+                        name: "FK_Polaznici_Veza_VezaID",
+                        column: x => x.VezaID,
+                        principalTable: "Veza",
                         principalColumn: "ID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_InstruktorVozilo_InstruktorID",
-                table: "InstruktorVozilo",
+                name: "IX_Polaznici_VezaID",
+                table: "Polaznici",
+                column: "VezaID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Veza_InstruktorID",
+                table: "Veza",
                 column: "InstruktorID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_InstruktorVozilo_VoziloID",
-                table: "InstruktorVozilo",
-                column: "VoziloID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Polaznici_InstruktorID",
-                table: "Polaznici",
-                column: "InstruktorID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Polaznici_VoziloID",
-                table: "Polaznici",
+                name: "IX_Veza_VoziloID",
+                table: "Veza",
                 column: "VoziloID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "InstruktorVozilo");
+                name: "Polaznici");
 
             migrationBuilder.DropTable(
-                name: "Polaznici");
+                name: "Veza");
 
             migrationBuilder.DropTable(
                 name: "Instruktori");

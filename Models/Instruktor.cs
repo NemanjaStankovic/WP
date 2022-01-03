@@ -28,11 +28,8 @@ namespace Models
         [Range(0,999999999)]
         public int Telefon { get; set; } 
         public string Adresa { get; set; }
-        
-        //[JsonIgnore] 
-        public List<Polaznik> Polaznici{ get; set; }
 
        // [JsonIgnore] 
-        public List<InstruktorVozilo> Vozila{ get; set; }
+        public List<Spoj> Veza{ get; set; }
     }
 }

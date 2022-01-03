@@ -22,8 +22,7 @@ namespace WEBPROJEKAT.Controllers // ?????????????
         public async Task<ActionResult> Preuzmi(string br_tablice)
         {
             var auta=Context.Vozila
-                     .Include(p => p.ListaPolaznika.Where(p=>p.Vozilo.RegistarskaTablica==br_tablice))
-                     .Include(p=>p.ListaInstruktora);
+                     .Include(p => p.Veza.Where(p=>p.Vozilo.RegistarskaTablica==br_tablice));
             var auto=await auta./*Where(p=>p.RegistarskaTablica==br_tablice).*/ToListAsync();
             return Ok(auto);
             

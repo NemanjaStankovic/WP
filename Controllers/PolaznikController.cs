@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
+using System.Collections.Generic;
 namespace WEBPROJEKAT.Controllers
 {
     [ApiController]
@@ -57,27 +58,23 @@ namespace WEBPROJEKAT.Controllers
                     PolozioVoznju=PV,
                     Ime=ime,
                     Prezime=prezime,
-                    Vozilo=auto,
-                    Instruktor=instruktor
                 };
-                InstruktorVozilo iv = new InstruktorVozilo
+                Spoj iv = new Spoj
                 {
                     Vozilo=auto,
-                    Instruktor=instruktor
+                    Instruktor=instruktor,
+                    Polaznici=new List<Polaznik>()
+
                 };
-                //instruktor.Polaznici.Add(polaznik);
-                //auto.ListaPolaznika.Add(polaznik);
-                Context.InstruktorVozilo.Add(iv);
-                Context.Polaznici.Add(polaznik);//ako dugo traje metoda moze i AddAsync
-                await Context.SaveChangesAsync();//moze da potraje upis u bazu; odvijace se u pozadinskoj niti
-                //alternativno Context.SaveChangesAsync(); (bez await) ce da prebaci fju na novu nit a stara ce 
-                //da nastavi da izvrsava glavni kod zbog cega ce se sledeca linija izvrsiti bez obzira na rezultat operacije
-                //vraca broj uspesno dodatih entiteta
+                iv.Polaznici.Add(polaznik);
+                Context.Polaznici.Add(polaznik);
+                Context.Veza.Add(iv);
+                await Context.SaveChangesAsync();
                 return Ok($"Korisnik {polaznik.Ime} {polaznik.Prezime} je uspesno dodat!");//upise u bazu a iz bazu prepisuje ID
             }
             catch(Exception e)
             {
-                return BadRequest(e.Message); //poruku iz baze vraca
+                return BadRequest(e.ToString()); //poruku iz baze vraca
 
             }
         }
@@ -86,8 +83,7 @@ namespace WEBPROJEKAT.Controllers
         public async Task<ActionResult> PrikaziPolaznika(long jmbg)
         {
             var pol=await Context.Polaznici
-                          .Include(p=>p.Vozilo).Where(p=>p.JMBG==jmbg)
-                          .Include(p=>p.Instruktor).ToListAsync();//.Where(p=>p.JMBG==jmbg)
+                          .Include(p=>p.Veza).Where(p=>p.JMBG==jmbg).ToListAsync();      // ? ? ? ? ?
             return Ok(pol);
         }
 
@@ -102,15 +98,19 @@ namespace WEBPROJEKAT.Controllers
             }
             try{
                 var pol=await Context.Polaznici.Where(p=>p.JMBG==jmbg).FirstOrDefaultAsync();
-                var instruktor=pol.Instruktor;
-                var auto=pol.Vozilo;
-                var veza=await Context.InstruktorVozilo.Where(p=>p.InstruktorID==auto.ID && p.ID==instruktor.ID).FirstOrDefaultAsync();
+                var spoj=await Context.Veza.Where(p=>p.Polaznici.Contains(pol)).FirstOrDefaultAsync();
+                //var veza=await Context.Veza.Where(p=>p.Polaznici==pol).FirstOrDefaultAsync();
+                /*InstruktorVozilo iv = new InstruktorVozilo
+                {
+                    ID=veza.ID,
+                    Vozilo=auto,
+                    Instruktor=instruktor
+                };*/
                 string pomIme=pol.Ime;
                 string pomPrez=pol.Prezime;
-                //.Polaznici.Remove(pol);
-                //auto.ListaPolaznika.Remove(pol);
+               // Context.Veza.Remove(veza);
                 Context.Polaznici.Remove(pol);
-                Context.InstruktorVozilo.Remove(veza);
+                Context.Veza.Remove(spoj);
                 
                 await Context.SaveChangesAsync();
                 return Ok($"Polaznik sa JMBG-om {jmbg} {pomIme} {pomPrez} je uspesno obrisan!");

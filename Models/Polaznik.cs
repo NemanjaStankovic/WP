@@ -30,9 +30,7 @@ namespace Models
         [Required]
         public string Prezime { get; set; }
         
-        [JsonIgnore]
-        public Vozilo Vozilo { get; set; }
         [JsonIgnore]                      
-        public Instruktor Instruktor { get; set; }
+        public Spoj Veza { get; set; }
     }
 }

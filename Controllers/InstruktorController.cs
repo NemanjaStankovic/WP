@@ -52,8 +52,7 @@ namespace WEBPROJEKAT.Controllers
             return Ok(auto);*/
             
             var ins=Context.Instruktori
-                    .Include(p=>p.Polaznici).Where(p=>p.Ime==ime && p.Prezime==prezime)
-                    .Include(p=>p.Vozila);
+                    .Include(p=>p.Veza).Where(p=>p.Ime==ime && p.Prezime==prezime);
             var insi=await ins.ToListAsync();
             return Ok(insi);
 

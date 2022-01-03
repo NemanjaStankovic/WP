@@ -37,10 +37,8 @@ namespace Models
         [RegularExpression("\\d+")]
         [Range(20,180)]
         public int SnagaMotora { get; set; }
-        //[JsonIgnore]
-        public List<Polaznik> ListaPolaznika { get; set; }
 
         [JsonIgnore]
-        public List<InstruktorVozilo> ListaInstruktora { get; set;}
+        public List<Spoj> Veza { get; set;}
     }
 }

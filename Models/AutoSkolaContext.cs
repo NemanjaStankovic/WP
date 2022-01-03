@@ -7,12 +7,10 @@ namespace Models
         public DbSet<Vozilo> Vozila { get; set; }
 
         public DbSet<Polaznik> Polaznici { get; set; }
-        public DbSet<InstruktorVozilo> InstruktorVozilo { get; set; }
+        public DbSet<Spoj> Veza { get; set; }
         public AutoSkolaContext(DbContextOptions options):base(options)
         {
 
         }
-
-
     }
 }
