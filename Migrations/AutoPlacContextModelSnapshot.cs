@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Models;
 
 namespace WEB_projekat.Migrations
 {
-    [DbContext(typeof(AutoSkolaContext))]
-    [Migration("20220103141233_v1")]
-    partial class v1
+    [DbContext(typeof(AutoPlacContext))]
+    partial class AutoPlacContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,7 @@ namespace WEB_projekat.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Models.Instruktor", b =>
+            modelBuilder.Entity("Models.AutoPlac", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -31,8 +29,35 @@ namespace WEB_projekat.Migrations
                     b.Property<string>("Adresa")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GodinaRodjena")
+                    b.Property<int>("Kapacitet")
                         .HasColumnType("int");
+
+                    b.Property<string>("Naziv")
+                        .IsRequired()
+                        .HasMaxLength(15)
+                        .HasColumnType("nvarchar(15)");
+
+                    b.Property<int>("Telefon")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Placevi");
+                });
+
+            modelBuilder.Entity("Models.Prodavac", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Adresa")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("BrLicneKarte")
+                        .HasMaxLength(9)
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Ime")
                         .IsRequired()
@@ -49,70 +74,26 @@ namespace WEB_projekat.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("Instruktori");
+                    b.ToTable("Prodavci");
                 });
 
-            modelBuilder.Entity("Models.Polaznik", b =>
+            modelBuilder.Entity("Models.TipKaroserije", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("BrLicneKarte")
-                        .HasMaxLength(9)
-                        .HasColumnType("int");
-
-                    b.Property<string>("Ime")
+                    b.Property<string>("Naziv")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("JMBG")
-                        .HasMaxLength(13)
-                        .HasColumnType("bigint");
-
-                    b.Property<bool>("PolozioTest")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("PolozioVoznju")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Prezime")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)");
-
-                    b.Property<int?>("VezaID")
-                        .HasColumnType("int");
+                    b.Property<string>("Opis")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
 
-                    b.HasIndex("VezaID");
-
-                    b.ToTable("Polaznici");
-                });
-
-            modelBuilder.Entity("Models.Spoj", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("InstruktorID")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("VoziloID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("InstruktorID");
-
-                    b.HasIndex("VoziloID");
-
-                    b.ToTable("Veza");
+                    b.ToTable("Karoserije");
                 });
 
             modelBuilder.Entity("Models.Vozilo", b =>
@@ -122,7 +103,16 @@ namespace WEB_projekat.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("Cena")
+                        .HasColumnType("int");
+
                     b.Property<int>("GodinaProizvodnje")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("KaroserijaID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Kilometraza")
                         .HasColumnType("int");
 
                     b.Property<string>("Marka")
@@ -134,6 +124,9 @@ namespace WEB_projekat.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<int?>("NazivPlacaID")
+                        .HasColumnType("int");
+
                     b.Property<string>("RegistarskaTablica")
                         .IsRequired()
                         .HasMaxLength(8)
@@ -142,55 +135,57 @@ namespace WEB_projekat.Migrations
                     b.Property<int>("SnagaMotora")
                         .HasColumnType("int");
 
-                    b.Property<string>("VrstaVozila")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("VlasnikID")
+                        .HasColumnType("int");
 
                     b.Property<int>("ZapreminaMotora")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
+                    b.HasIndex("KaroserijaID");
+
+                    b.HasIndex("NazivPlacaID");
+
+                    b.HasIndex("VlasnikID");
+
                     b.ToTable("Vozilo");
-                });
-
-            modelBuilder.Entity("Models.Polaznik", b =>
-                {
-                    b.HasOne("Models.Spoj", "Veza")
-                        .WithMany("Polaznici")
-                        .HasForeignKey("VezaID");
-
-                    b.Navigation("Veza");
-                });
-
-            modelBuilder.Entity("Models.Spoj", b =>
-                {
-                    b.HasOne("Models.Instruktor", "Instruktor")
-                        .WithMany("Veza")
-                        .HasForeignKey("InstruktorID");
-
-                    b.HasOne("Models.Vozilo", "Vozilo")
-                        .WithMany("Veza")
-                        .HasForeignKey("VoziloID");
-
-                    b.Navigation("Instruktor");
-
-                    b.Navigation("Vozilo");
-                });
-
-            modelBuilder.Entity("Models.Instruktor", b =>
-                {
-                    b.Navigation("Veza");
-                });
-
-            modelBuilder.Entity("Models.Spoj", b =>
-                {
-                    b.Navigation("Polaznici");
                 });
 
             modelBuilder.Entity("Models.Vozilo", b =>
                 {
-                    b.Navigation("Veza");
+                    b.HasOne("Models.TipKaroserije", "Karoserija")
+                        .WithMany("VozilaSaTipomKaroserije")
+                        .HasForeignKey("KaroserijaID");
+
+                    b.HasOne("Models.AutoPlac", "NazivPlaca")
+                        .WithMany("Vozila")
+                        .HasForeignKey("NazivPlacaID");
+
+                    b.HasOne("Models.Prodavac", "Vlasnik")
+                        .WithMany("ListaVozila")
+                        .HasForeignKey("VlasnikID");
+
+                    b.Navigation("Karoserija");
+
+                    b.Navigation("NazivPlaca");
+
+                    b.Navigation("Vlasnik");
+                });
+
+            modelBuilder.Entity("Models.AutoPlac", b =>
+                {
+                    b.Navigation("Vozila");
+                });
+
+            modelBuilder.Entity("Models.Prodavac", b =>
+                {
+                    b.Navigation("ListaVozila");
+                });
+
+            modelBuilder.Entity("Models.TipKaroserije", b =>
+                {
+                    b.Navigation("VozilaSaTipomKaroserije");
                 });
 #pragma warning restore 612, 618
         }

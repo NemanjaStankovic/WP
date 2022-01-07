@@ -22,23 +22,31 @@ namespace Models
         [MaxLength(8)]
         public string RegistarskaTablica { get; set; }
 
-        [RegularExpression("\\w+")]
-        [Required]
-        public string VrstaVozila { get; set; } //kamion,auto,motocikl
+        [RegularExpression("\\d+")] //samo brojevi
+        [Range(100,200000)]
+        public int Cena { get; set; }
 
         [RegularExpression("\\d+")] //samo brojevi
-        [Range(1980,2021)]
+        [Range(1960,2021)]
         public int GodinaProizvodnje { get; set; }
 
         [RegularExpression("\\d+")]
-        [Range(50,2000)]
+        public int Kilometraza { get; set; }
+
+        [RegularExpression("\\d+")]
+        [Range(20,8000)]
         public int ZapreminaMotora { get; set; }
 
         [RegularExpression("\\d+")]
-        [Range(20,180)]
+        [Range(20,1000)]
         public int SnagaMotora { get; set; }
 
-        [JsonIgnore]
-        public List<Spoj> Veza { get; set;}
+        [RegularExpression("\\w+")] //slova samo
+        [MaxLength(15)]
+        public TipKaroserije Karoserija { get; set; }
+
+        public AutoPlac NazivPlaca { get; set; }
+
+        public Prodavac Vlasnik { get; set;}
     }
 }
