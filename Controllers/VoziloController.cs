@@ -16,6 +16,26 @@ namespace WEBPROJEKAT.Controllers // ?????????????
         {
             Context=context;
         }
+        [Route("PrikazPoObKaroserije/{idKaroserije}")]
+        [HttpGet]
+        public async Task<ActionResult> PreuzmiPoOblikuKaroserije(int idKaroserije)
+        {
+            var auta=Context.Vozila
+                            .Include(p=>p.Vlasnik).Where(p=>p.Karoserija.ID==idKaroserije);
+            var auto=await auta.ToListAsync();
+            return Ok
+            (
+                auto.Select(p=>
+                new
+                {
+                    Marka=p.Marka,
+                    Model=p.Model,
+                    GodinaProizvodnje=p.GodinaProizvodnje,
+                    ImeVlasnika=p.Vlasnik.Ime,
+                    BrojTelefona=p.Vlasnik.Telefon,
+
+                })); 
+        }
 
         [Route("Prikaz/{br_tablice}")]
         [HttpGet]

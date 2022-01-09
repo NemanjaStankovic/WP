@@ -1,0 +1,30 @@
+.PrikazVozila{
+    border: 1px solid black;
+    text-align: center;
+    background-color: cornflowerblue;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    width: 70%;
+    flex-grow: 3;
+}
+.auto{
+    border: 1px solid black;
+    padding: 5px;
+
+}
+.Forma{
+    background-color: darkred;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    padding: 5px;
+    flex-grow: 1 0 193px;
+}
+.GlavniKonteiner{
+    background-color: darkgreen;
+    display: flex;
+}
+.red{
+    padding: 5px;
+}
