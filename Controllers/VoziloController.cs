@@ -79,6 +79,10 @@ namespace WEBPROJEKAT.Controllers // ?????????????
             }
             try
             {
+                var vozZaProveru=await Context.Vozila.Where(p=>p.RegistarskaTablica==Registarska_tablica).FirstOrDefaultAsync();
+                if(vozZaProveru!=null){
+                    return BadRequest("Vozilo vec postoji u bazi!");
+                }
                 var vlasnik=await Context.Prodavci.Where(p=>p.BrLicneKarte==Vlasnik_brLicneKarte).FirstOrDefaultAsync();
                 if(vlasnik==null)
                 {
@@ -104,7 +108,20 @@ namespace WEBPROJEKAT.Controllers // ?????????????
                 //alternativno Context.SaveChangesAsync(); (bez await) ce da prebaci fju na novu nit a stara ce 
                 //da nastavi da izvrsava glavni kod zbog cega ce se sledeca linija izvrsiti bez obzira na rezultat operacije
                 //vraca broj uspesno dodatih entiteta
-                return Ok($"Vozilo je dodato! ID je :{novoVozilo.ID}");//upise u bazu a iz bazu prepisuje ID
+
+                var sviAutomobiliVlasnika=await Context.Vozila
+                                          .Include(p=>p.Vlasnik).Where(p=>p.Vlasnik==vlasnik && p.NazivPlaca==plac)
+                                          .Select(p=>
+                                          new
+                                          {
+                                              Marka=p.Marka,
+                                              Model=p.Model,
+                                              GodinaProizvodnje=p.GodinaProizvodnje,
+                                              ImeVlasnika=p.Vlasnik.Ime,
+                                              BrojTelefona=p.Vlasnik.Telefon,
+                                          }
+                                          ).ToListAsync();
+                return Ok(sviAutomobiliVlasnika);//upise u bazu a iz bazu prepisuje ID
             }
             catch(Exception e)
             {

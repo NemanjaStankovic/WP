@@ -50,31 +50,82 @@ export class AutoPlac{
         let prikazVozila=document.createElement("div");
         prikazVozila.className="PrikazVozila";
         this.konteiner.appendChild(prikazVozila);
-        var info=["Marka: ", "Model: ","Registarska tablica: ","Cena: ","Godina proizvodnje: ","Kilometraza: ","Zapremina motora: ", "Snaga motora: ", "Naziv placa: ", "brLK: "];
-        var pom=["Registarska tablica","Cena","Godina proizvodnje","Kilometraza","Zapremina motora","Snaga motora"];
-        info.forEach(p=>{
-            red=this.crtajRed(host);
-            l=document.createElement("label");
-            l.innerHTML=p;
-            red.appendChild(l);
-            var tb=document.createElement("input");
-            tb.className=p.substr(0, p.indexOf(':'));
-            pom.forEach(p=>{
-                if(p==tb.className){
-                    tb.type=Number;
-                }
-            })
-            red.appendChild(tb);
-            //console.log("ime klase je "+tb.className);
+        //var info=["Marka: ", "Model: ","Registarska tablica: ","Cena: ","Godina proizvodnje: ","Kilometraza: ","Zapremina motora: ", "Snaga motora: ", "Naziv placa: ", "brLK: "];
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Marka: ";
+        red.appendChild(l);
+        var marka=document.createElement("input");
+        red.appendChild(marka);
 
-        })
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Model: ";
+        red.appendChild(l);
+        var model=document.createElement("input");
+        red.appendChild(model);
+
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Registarska tablica: ";
+        red.appendChild(l);
+        var reg_tablica=document.createElement("input");
+        red.appendChild(reg_tablica);
+
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Cena: ";
+        red.appendChild(l);
+        var cena=document.createElement("input");
+        red.appendChild(cena);
+
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Godina proizvodnje: ";
+        red.appendChild(l);
+        var godina_proiz=document.createElement("input");
+        red.appendChild(godina_proiz);
+
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Kilometraza: ";
+        red.appendChild(l);
+        var kilometraza=document.createElement("input");
+        red.appendChild(kilometraza);
+
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Zapremina motora: ";
+        red.appendChild(l);
+        var zap_motora=document.createElement("input");
+        red.appendChild(zap_motora);
+
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Snaga motora: ";
+        red.appendChild(l);
+        var snaga_motora=document.createElement("input");
+        red.appendChild(snaga_motora);
+
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Naziv placa: ";
+        red.appendChild(l);
+        var naziv_placa=document.createElement("input");
+        red.appendChild(naziv_placa);
+
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Broj licne karte: ";
+        red.appendChild(l);
+        var vlasnik_brLK=document.createElement("input");
+        red.appendChild(vlasnik_brLK);
+
         red=this.crtajRed(host);
         let btnDodaj=document.createElement("button");
         btnDodaj.innerHTML="Dodaj";
         red.appendChild(btnDodaj);
-        var jaje=document.querySelector(".Marka").value;
-        console.log(jaje);
-        btnDodaj.onclick=(ev)=>this.dodajVozilo(jaje);
+        btnDodaj.onclick=(ev)=>this.dodajVozilo(marka.value, model.value, reg_tablica.value, cena.value, godina_proiz.value, kilometraza.value, zap_motora.value, snaga_motora.value, naziv_placa.value, vlasnik_brLK.value);
 
     }
     pretraziPoOblikuKaroserije(){
@@ -108,15 +159,117 @@ export class AutoPlac{
         roditelj.appendChild(prikazVozila);
         return prikazVozila;
     }
-    dodajVozilo(marka)//,model,tablica,cena,godina_proiz,kilometraza,zap_motora,snaga_motora,karoserija,plac_naziv,vlasnik_brLK)
+    dodajVozilo(marka, model, tablica, cena, godina_proiz, kilometraza, zap_motora, snaga_motora, plac_naziv, vlasnik_brLK)
     {
+
+        console.log("Cena:"+cena+"ete");
+        var letters = /^[A-Za-z]+$/;
+        var numbers = /^[0-9]*$/;
         if(marka==""){
             alert("Marka automobila je obavezno polje!");
             return;
         }
-        if(tablica=""){
+        else{//
+            if(marka.length>15 || !marka.match(letters)){
+                alert("Marka ne sme da bude duza od 15 karaktera niti da sadrzi cifre!");
+                return;
+            }
+        }
+        if(tablica==""){
             alert("Unesite broj registarskih tablica!");
             return;
         }
+        else{
+            if(tablica.length>8)
+            {
+                alert("Registarska oznaka vozila ne sme da bude duza od 8 karaktera!");
+                return;
+            }
+        }
+        if(!cena.match(numbers))
+        {
+            alert("Cena sme da sadrzi samo cifre!");
+            return;
+        }
+        else{
+            if(cena>200000 || cena<100){
+                alert("Cena mora da bude u opsegu 100-200000!");
+                return;
+            }
+        }
+        if(!godina_proiz.match(numbers) && godina_proiz!="")
+        {
+            alert("Godina proizvodnje sme da sadrzi samo cifre!");
+            return;
+        }
+        else{
+            if(godina_proiz<1960 || godina_proiz>2021){
+            console.log("Godinka "+godina_proiz);
+            alert("Vozilo ne moze da bude proizvedeno pre 1960-te godine!");
+            return;
+            }
+        }
+        if(!kilometraza.match(numbers) && kilometraza!="")
+        {
+            alert("Kilometraza sme da sadrzi samo cifre!");
+            return;
+        }
+        if(!zap_motora.match(numbers) && zap_motora!="")
+        {
+            alert("Zapremina motora sme da sadrzi samo cifre!");
+            return;
+        }
+        else{
+            if(zap_motora<20 && zap_motora>8000)
+            {
+                alert("Zapremina motora mora da bude u opsegu 20-8000ccm!");
+                return;
+            }
+        }
+        if(!snaga_motora.match(numbers) && zap_motora!="")
+        {
+            alert("Snaga sme da sadrzi samo cifre!");
+            return;
+        }
+        else{
+            if(zap_motora<20 && zap_motora>1000)
+            {
+                alert("Snaga motora mora da bude u opsegu 20-1000ks!");
+                return;
+            }
+        }
+        //naziv placa ? ? ? ?
+        if(!vlasnik_brLK.match(numbers) && vlasnik_brLK!="")
+        {
+            alert("BRLK vlasnika sme da sadrzi samo cifre!");
+            return;
+        }
+        else{
+            if(vlasnik_brLK.length>9){
+            alert("Broj LK je predug!");
+            return;
+            }
+        }
+        let optionEl = this.konteiner.querySelector("select");
+        var TipKaStr=optionEl.options[optionEl.selectedIndex].innerHTML;
+        console.log(TipKaStr);
+        fetch("https://localhost:5001/Vozilo/DodajVozilo/"+marka+"/"+model+"/"+tablica+"/"+cena+"/"+godina_proiz+"/"+kilometraza+"/"
+        +zap_motora+"/"+snaga_motora+"/"+TipKaStr+"/"+plac_naziv+"/"+vlasnik_brLK,
+        {
+            method:"POST"
+        }).then(s=>{
+            if(s.ok){
+                var zaVozila=this.obrisiPrethodniSadrzaj();
+                s.json().then(data=>{
+                    data.forEach(voz=>{
+                        const novoVozilo= new VoziloInfo(voz.marka,voz.model,voz.godinaProizvodnje,voz.imeVlasnika,voz.brojTelefona);
+                        novoVozilo.crtaj(zaVozila);
+                    })
+
+                })
+            }
+        })
+
+
     }
 }
