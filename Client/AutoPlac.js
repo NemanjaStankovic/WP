@@ -11,6 +11,11 @@ export class AutoPlac{
         this.konteiner.className="GlavniKonteiner";
         host.appendChild(this.konteiner);
 
+        /*let celaForma=document.createElement("div");
+        celaForma.className="CelaForma";
+        this.konteiner.appendChild(celaForma);*/
+
+
         let kontForma=document.createElement("div");     //za formu
         kontForma.className="Forma";
         this.konteiner.appendChild(kontForma);
@@ -131,7 +136,12 @@ export class AutoPlac{
     pretraziPoOblikuKaroserije(){
         let optionEl = this.konteiner.querySelector("select");
         var TipKaID=optionEl.options[optionEl.selectedIndex].value;
-        //console.log(prikazVozila);
+        var info;
+        this.listaTipovaKaroserije.forEach(el=>{
+            if(el.id==TipKaID){
+                info=el.naziv+" - "+el.opis;
+            }
+        })
         fetch("https://localhost:5001/Vozilo/PrikazPoObKaroserije/"+TipKaID,
         {
             method:"GET"
@@ -140,11 +150,15 @@ export class AutoPlac{
                 var zaVozila=this.obrisiPrethodniSadrzaj();
                 s.json().then(data=>{
                     data.forEach(v=>{// Marka=p.Marka, Model=p.Model, GodinaProizvodnje=p.GodinaProizvodnje, ImeVlasnika=p.Vlasnik.Ime, BrojTelefona=p.Vlasnik.Telefon,
-                        let vozilo=new VoziloInfo(v.marka, v.model, v.godinaProizvodnje, v.imeVlasnika, v.brojTelefona);
+                        let vozilo=new VoziloInfo(v.id, v.marka, v.model, v.godinaProizvodnje, v.imeVlasnika, v.brojTelefona);
                         vozilo.crtaj(zaVozila);
                     })
                 })
             }
+            var opis=document.createElement("div");
+            opis.innerHTML=info;
+            opis.className="Opis";
+            document.body.appendChild(opis);
         })
 
     }
@@ -161,9 +175,7 @@ export class AutoPlac{
     }
     dodajVozilo(marka, model, tablica, cena, godina_proiz, kilometraza, zap_motora, snaga_motora, plac_naziv, vlasnik_brLK)
     {
-
-        console.log("Cena:"+cena+"ete");
-        var letters = /^[A-Za-z]+$/;
+        var letters = /^[a-zA-Z\s]*$/;
         var numbers = /^[0-9]*$/;
         if(marka==""){
             alert("Marka automobila je obavezno polje!");
@@ -171,8 +183,17 @@ export class AutoPlac{
         }
         else{//
             if(marka.length>15 || !marka.match(letters)){
-                alert("Marka ne sme da bude duza od 15 karaktera niti da sadrzi cifre!");
+                alert("Marka ne sme da bude duza od 15 karaktera niti da sadrzi cifre ili specijalne znake!");
                 return;
+            }
+        }
+        if(model==""){
+            alert("Unesite model automobila");
+            return
+        } 
+        else{
+            if(model.length>15){
+                alert("Naziv modela ne sme da bude duzi od 15 karaktera")
             }
         }
         if(tablica==""){
@@ -186,60 +207,59 @@ export class AutoPlac{
                 return;
             }
         }
-        if(!cena.match(numbers))
+        if(cena=="")
         {
-            alert("Cena sme da sadrzi samo cifre!");
+            alert("Unesite cenu!");
             return;
         }
         else{
-            if(cena>200000 || cena<100){
-                alert("Cena mora da bude u opsegu 100-200000!");
+            if(cena>200000 || cena<100 || !cena.match(numbers)){
+                alert("Cena mora da bude u opsegu 100-200000! i sme da sadrzi samo brojeve");
                 return;
             }
         }
-        if(!godina_proiz.match(numbers) && godina_proiz!="")
+        if(godina_proiz=="")
         {
-            alert("Godina proizvodnje sme da sadrzi samo cifre!");
+            alert("Unesite godinu proizvodnje!");
             return;
         }
         else{
-            if(godina_proiz<1960 || godina_proiz>2021){
-            console.log("Godinka "+godina_proiz);
-            alert("Vozilo ne moze da bude proizvedeno pre 1960-te godine!");
+            if(godina_proiz<1960 || godina_proiz>2021 || !godina_proiz.match(numbers)){
+            alert("Vozilo ne moze da bude proizvedeno pre 1960-te godine! Godina je cetvorocifreni broj bez specijalnih znakova");
             return;
             }
         }
-        if(!kilometraza.match(numbers) && kilometraza!="")
+        if(!kilometraza.match(numbers) || kilometraza=="" )
         {
-            alert("Kilometraza sme da sadrzi samo cifre!");
+            alert("Unesite broj predjenih kilometara!");
             return;
         }
-        if(!zap_motora.match(numbers) && zap_motora!="")
+        if(!zap_motora.match(numbers) || zap_motora=="")
         {
             alert("Zapremina motora sme da sadrzi samo cifre!");
             return;
         }
         else{
-            if(zap_motora<20 && zap_motora>8000)
+            if(zap_motora<20 || zap_motora>8000)
             {
                 alert("Zapremina motora mora da bude u opsegu 20-8000ccm!");
                 return;
             }
         }
-        if(!snaga_motora.match(numbers) && zap_motora!="")
+        if(!snaga_motora.match(numbers) || snaga_motora=="")
         {
             alert("Snaga sme da sadrzi samo cifre!");
             return;
         }
         else{
-            if(zap_motora<20 && zap_motora>1000)
+            if(snaga_motora<20 || snaga_motora>1000)
             {
                 alert("Snaga motora mora da bude u opsegu 20-1000ks!");
                 return;
             }
         }
         //naziv placa ? ? ? ?
-        if(!vlasnik_brLK.match(numbers) && vlasnik_brLK!="")
+        if(!vlasnik_brLK.match(numbers) || vlasnik_brLK=="")
         {
             alert("BRLK vlasnika sme da sadrzi samo cifre!");
             return;
@@ -252,7 +272,6 @@ export class AutoPlac{
         }
         let optionEl = this.konteiner.querySelector("select");
         var TipKaStr=optionEl.options[optionEl.selectedIndex].innerHTML;
-        console.log(TipKaStr);
         fetch("https://localhost:5001/Vozilo/DodajVozilo/"+marka+"/"+model+"/"+tablica+"/"+cena+"/"+godina_proiz+"/"+kilometraza+"/"
         +zap_motora+"/"+snaga_motora+"/"+TipKaStr+"/"+plac_naziv+"/"+vlasnik_brLK,
         {
@@ -262,11 +281,14 @@ export class AutoPlac{
                 var zaVozila=this.obrisiPrethodniSadrzaj();
                 s.json().then(data=>{
                     data.forEach(voz=>{
-                        const novoVozilo= new VoziloInfo(voz.marka,voz.model,voz.godinaProizvodnje,voz.imeVlasnika,voz.brojTelefona);
+                        const novoVozilo= new VoziloInfo(voz.id, voz.marka,voz.model,voz.godinaProizvodnje,voz.imeVlasnika,voz.brojTelefona);
                         novoVozilo.crtaj(zaVozila);
                     })
 
                 })
+            }
+            else{
+                console.log(s.Response);
             }
         })
 

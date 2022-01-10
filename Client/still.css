@@ -1,6 +1,6 @@
 .PrikazVozila{
     border: 1px solid black;
-    text-align: center;
+    text-align: left;
     background-color: cornflowerblue;
     display: flex;
     flex-wrap: wrap;

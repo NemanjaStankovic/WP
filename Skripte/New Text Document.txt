@@ -1,2 +1,6 @@
 Broj licne karte i jmbg sredi
+za 2 instance !!!
 za naziv placa za dodavanje ako treba dodaj
+(obrisi kao dugme da ide pa da poziva fju koja fetchuje obrisi
+izmeni kao dugme pa da pokupi preko body iz forme podatke pa da azurira)
+ili (da ubaci u formu i odatle edit i delete)

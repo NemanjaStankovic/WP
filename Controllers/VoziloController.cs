@@ -28,6 +28,7 @@ namespace WEBPROJEKAT.Controllers // ?????????????
                 auto.Select(p=>
                 new
                 {
+                    ID=p.ID,
                     Marka=p.Marka,
                     Model=p.Model,
                     GodinaProizvodnje=p.GodinaProizvodnje,
@@ -37,12 +38,12 @@ namespace WEBPROJEKAT.Controllers // ?????????????
                 })); 
         }
 
-        [Route("Prikaz/{br_tablice}")]
+        [Route("Prikaz/{id}")]
         [HttpGet]
-        public async Task<ActionResult> Preuzmi(string br_tablice)
+        public async Task<ActionResult> Preuzmi(int id)
         {
             var auta=Context.Vozila
-                            .Include(p=>p.Vlasnik).Where(p=>p.RegistarskaTablica==br_tablice)
+                            .Include(p=>p.Vlasnik).Where(p=>p.ID==id)
                             .Include(p=>p.Karoserija)
                             .Include(p=>p.NazivPlaca);
             var auto=await auta./*Where(p=>p.RegistarskaTablica==br_tablice).*/ToListAsync();
@@ -80,8 +81,8 @@ namespace WEBPROJEKAT.Controllers // ?????????????
             try
             {
                 var vozZaProveru=await Context.Vozila.Where(p=>p.RegistarskaTablica==Registarska_tablica).FirstOrDefaultAsync();
-                if(vozZaProveru!=null){
-                    return BadRequest("Vozilo vec postoji u bazi!");
+                if(vozZaProveru==null){
+                    return BadRequest("Vozilo sa datom registarskom tablicom vec postoji u bazi!");
                 }
                 var vlasnik=await Context.Prodavci.Where(p=>p.BrLicneKarte==Vlasnik_brLicneKarte).FirstOrDefaultAsync();
                 if(vlasnik==null)
@@ -114,6 +115,7 @@ namespace WEBPROJEKAT.Controllers // ?????????????
                                           .Select(p=>
                                           new
                                           {
+                                              ID=p.ID,
                                               Marka=p.Marka,
                                               Model=p.Model,
                                               GodinaProizvodnje=p.GodinaProizvodnje,

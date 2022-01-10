@@ -13,4 +13,3 @@ fetch("https://localhost:5001/TipKaroserije/PreuzmiTipKaroserije")
         autoPlac.crtaj(document.body);
     })
 })
-    console.log(listaTipovaK);
