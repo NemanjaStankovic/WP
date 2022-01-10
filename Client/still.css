@@ -28,3 +28,12 @@
 .red{
     padding: 5px;
 }
+.Opis{
+    background-color: coral;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+}
+.GlavnijiKonteiner{
+    display: flex;
+    flex-direction: column;
+    background-color: darkgoldenrod;
+}

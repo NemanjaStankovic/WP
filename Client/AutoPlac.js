@@ -8,8 +8,12 @@ export class AutoPlac{
     }
     crtaj(host){
         this.konteiner=document.createElement("div");   //cela forma
-        this.konteiner.className="GlavniKonteiner";
+        this.konteiner.className="GlavnijiKonteiner";
         host.appendChild(this.konteiner);
+        console.log(this.konteiner);
+        var glavniKonteiner=document.createElement("div");   //cela forma
+        glavniKonteiner.className="GlavniKonteiner";
+        this.konteiner.appendChild(glavniKonteiner);
 
         /*let celaForma=document.createElement("div");
         celaForma.className="CelaForma";
@@ -18,7 +22,7 @@ export class AutoPlac{
 
         let kontForma=document.createElement("div");     //za formu
         kontForma.className="Forma";
-        this.konteiner.appendChild(kontForma);
+        glavniKonteiner.appendChild(kontForma);
 
         this.crtajFormu(kontForma);         //poziv fje za crtanje forme
     }
@@ -54,7 +58,9 @@ export class AutoPlac{
 
         let prikazVozila=document.createElement("div");
         prikazVozila.className="PrikazVozila";
-        this.konteiner.appendChild(prikazVozila);
+        var parent=this.konteiner.childNodes[0];
+        parent.appendChild(prikazVozila);
+
         //var info=["Marka: ", "Model: ","Registarska tablica: ","Cena: ","Godina proizvodnje: ","Kilometraza: ","Zapremina motora: ", "Snaga motora: ", "Naziv placa: ", "brLK: "];
         red=this.crtajRed(host);
         l=document.createElement("label");
@@ -132,6 +138,10 @@ export class AutoPlac{
         red.appendChild(btnDodaj);
         btnDodaj.onclick=(ev)=>this.dodajVozilo(marka.value, model.value, reg_tablica.value, cena.value, godina_proiz.value, kilometraza.value, zap_motora.value, snaga_motora.value, naziv_placa.value, vlasnik_brLK.value);
 
+        var opis=document.createElement("div");
+        opis.innerHTML="";
+        opis.className="Opis";
+        this.konteiner.appendChild(opis);
     }
     pretraziPoOblikuKaroserije(){
         let optionEl = this.konteiner.querySelector("select");
@@ -155,10 +165,8 @@ export class AutoPlac{
                     })
                 })
             }
-            var opis=document.createElement("div");
+            var opis=document.querySelector(".Opis");
             opis.innerHTML=info;
-            opis.className="Opis";
-            document.body.appendChild(opis);
         })
 
     }
