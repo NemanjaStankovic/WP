@@ -16,12 +16,12 @@ namespace WEBPROJEKAT.Controllers // ?????????????
         {
             Context=context;
         }
-        [Route("PrikazPoObKaroserije/{idKaroserije}")]
+        [Route("PrikazPoObKaroserije/{idKaroserije}/{naziv}")]
         [HttpGet]
-        public async Task<ActionResult> PreuzmiPoOblikuKaroserije(int idKaroserije)
+        public async Task<ActionResult> PreuzmiPoOblikuKaroserije(int idKaroserije, string naziv)
         {
             var auta=Context.Vozila
-                            .Include(p=>p.Vlasnik).Where(p=>p.Karoserija.ID==idKaroserije);
+                            .Include(p=>p.Vlasnik).Where(p=>p.Karoserija.ID==idKaroserije && p.NazivPlaca.Naziv==naziv);
             var auto=await auta.ToListAsync();
             return Ok
             (

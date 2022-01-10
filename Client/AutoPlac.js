@@ -1,8 +1,13 @@
 import { VoziloInfo } from "./VoziloInfo.js";
 
 export class AutoPlac{
-    constructor(listaTipovaKaroserije)
+    constructor(listaTipovaKaroserije,id, ime, brojTelefona, adresa, kapacitet)
     {
+        this.id=id;
+        this.naziv=ime;
+        this.brojTelefona=brojTelefona;
+        this.adresa=adresa;
+        this.kapacitet=kapacitet;
         this.listaTipovaKaroserije=listaTipovaKaroserije;
         this.konteiner=null;
     }
@@ -152,7 +157,7 @@ export class AutoPlac{
                 info=el.naziv+" - "+el.opis;
             }
         })
-        fetch("https://localhost:5001/Vozilo/PrikazPoObKaroserije/"+TipKaID,
+        fetch("https://localhost:5001/Vozilo/PrikazPoObKaroserije/"+TipKaID+"/"+this.naziv,
         {
             method:"GET"
         }).then(s=>{
@@ -161,18 +166,18 @@ export class AutoPlac{
                 s.json().then(data=>{
                     data.forEach(v=>{// Marka=p.Marka, Model=p.Model, GodinaProizvodnje=p.GodinaProizvodnje, ImeVlasnika=p.Vlasnik.Ime, BrojTelefona=p.Vlasnik.Telefon,
                         let vozilo=new VoziloInfo(v.id, v.marka, v.model, v.godinaProizvodnje, v.imeVlasnika, v.brojTelefona);
-                        vozilo.crtaj(zaVozila);
+                        vozilo.crtaj(this.konteiner.querySelector(".PrikazVozila"));
                     })
                 })
             }
-            var opis=document.querySelector(".Opis");
+            var opis=this.konteiner.querySelector(".Opis");
             opis.innerHTML=info;
         })
 
     }
     obrisiPrethodniSadrzaj()
     {
-        var deoZaVozila=document.querySelector(".PrikazVozila");
+        var deoZaVozila=this.konteiner.querySelector(".PrikazVozila");
         var roditelj=deoZaVozila.parentNode;
         roditelj.removeChild(deoZaVozila);
 
@@ -290,7 +295,7 @@ export class AutoPlac{
                 s.json().then(data=>{
                     data.forEach(voz=>{
                         const novoVozilo= new VoziloInfo(voz.id, voz.marka,voz.model,voz.godinaProizvodnje,voz.imeVlasnika,voz.brojTelefona);
-                        novoVozilo.crtaj(zaVozila);
+                        novoVozilo.crtaj(this.konteiner.querySelector(".PrikazVozila"));
                     })
 
                 })

@@ -9,7 +9,15 @@ fetch("https://localhost:5001/TipKaroserije/PreuzmiTipKaroserije")
             var tK=new TipKaroserije(tipK.id, tipK.naziv, tipK.opis);
             listaTipovaK.push(tK); 
         });
-        var autoPlac=new AutoPlac(listaTipovaK);
-        autoPlac.crtaj(document.body);
+        fetch("https://localhost:5001/AutoPlac/PreuzmiAutoPlaceve")
+        .then(p=>{
+            p.json().then(placevi=>{
+                placevi.forEach(el=>{
+                    var autoPlac=new AutoPlac(listaTipovaK,el.id,el.naziv,el.telefon,el.adresa,el.kapacitet);
+                    autoPlac.crtaj(document.body);
+                    console.log(autoPlac);
+                })
+            })
+        })
     })
 })
