@@ -9,8 +9,11 @@ export class VoziloInfo{
         this.Tablice=tablice;
         this.Cena=cena;
         this.miniKontejner=null;
+        this.Konteiner=null;
     }
     crtaj(host){
+        this.Konteiner=host.parentNode;
+        console.log(this.Konteiner);
         this.miniKontejner = document.createElement("div");
         this.miniKontejner.className="auto";
         this.miniKontejner.innerHTML=this.Marka+" " +this.Model +", "+this.GodinaProizvodnje+"<br />"+this.Tablice+" Cena: "+this.Cena+"$"+ "<br />"+this.ImeVlasnika+"-"+this.BrojTelefona;
@@ -28,6 +31,7 @@ export class VoziloInfo{
         btnPromeni.onclick=(ev)=>this.promeniVozilo();
     }
     obrisiVozilo(){
+        console.log(this.ID);
         fetch("https://localhost:5001/Vozilo/IzbrisiVozilo/"+this.ID,
         {
             method:"DELETE"
@@ -45,16 +49,17 @@ export class VoziloInfo{
         })
     }
     promeniVozilo(){
-        var formaTablica=this.miniKontejner.parentNode.parentNode;
-        formaTablica.querySelector(".tablica").value=this.Tablice;
-        formaTablica.querySelector(".Cena").value=this.Cena;
-        var promena=formaTablica.querySelectorAll(".vidljivo");
+        console.log("eve vis:"+this.Konteiner);
+        this.Konteiner.querySelector(".tablica").value=this.Tablice;
+        this.Konteiner.querySelector(".tablica").disabled=true;
+        this.Konteiner.querySelector(".Cena").value=this.Cena;
+        var promena=this.Konteiner.querySelectorAll(".vidljivo");
         promena.forEach(element => {
             element.className="nevidljivo";
             
         });
 
-        var obrisiDugme=formaTablica.querySelectorAll(".zaPromenuNaFormi");
+        var obrisiDugme=this.Konteiner.querySelectorAll(".zaPromenuNaFormi");
         obrisiDugme.forEach(el=>{
             if(el!=null){
                 (el.parentNode).removeChild(el);
@@ -68,14 +73,15 @@ export class VoziloInfo{
         otkaziDugme.className="zaPromenuNaFormi"
         obrisiDugme.onclick=(ev)=>this.promeniCenu();
         otkaziDugme.onclick=(ev)=>this.promeni();
-        var redZaDugmice=formaTablica.querySelector(".Dugmici");
+        var redZaDugmice=this.Konteiner.querySelector(".Dugmici");
         redZaDugmice.appendChild(obrisiDugme);
         redZaDugmice.appendChild(otkaziDugme);
     }
     promeniCenu(){
+        var tablica=this.Konteiner.querySelector(".tablica");
+        tablica.disabled=false;
         var numbers = /^[0-9]*$/;
-        var formaTablica=this.miniKontejner.parentNode.parentNode;
-        var novaCena=formaTablica.querySelector(".Cena").value;
+        var novaCena=this.Konteiner.querySelector(".Cena").value;
         console.log("Nova cena: "+novaCena);
         if(novaCena=="" || !novaCena.match(numbers) || novaCena>200000 || novaCena<100)
             {
@@ -90,6 +96,11 @@ export class VoziloInfo{
                 if(s.status==200){
                     this.Cena=novaCena;
                     alert("Uspesno promenjen podatak!");
+                    this.Cena=novaCena;
+                    var pom=this.miniKontejner;
+                    var roditelj=this.Konteiner.querySelector(".PrikazVozila");
+                    this.crtaj(roditelj);               //ovo jebe!
+                    pom.replaceWith(this.miniKontejner);
 
                 }
                 else{
@@ -105,17 +116,24 @@ export class VoziloInfo{
             })
 
         }
-        this.Cena=novaCena;
+        /*this.Cena=novaCena;
+        var pom=this.miniKontejner;
+        var roditelj=this.Konteiner.querySelector(".PrikazVozila");
+        this.crtaj(roditelj);               
+        pom.replaceWith(this.miniKontejner);*/
         this.promeni();
         
     } 
     promeni()
     {
-        var pom=this.miniKontejner;
-        var roditelj=this.miniKontejner.parentNode;
-        this.crtaj(roditelj);
-        pom.replaceWith(this.miniKontejner);
-        var roditelj=this.miniKontejner.parentNode.parentNode;
+        //var formaTablica=this.Konteiner;
+        this.Konteiner.querySelector(".tablica").disabled=false;
+        /*var pom=this.miniKontejner;
+        var roditelj=this.Konteiner.querySelector(".PrikazVozila");
+        this.crtaj(roditelj);               
+        pom.replaceWith(this.miniKontejner);*/
+        //var roditelj=this.miniKontejner.parentNode.parentNode;
+        var roditelj=this.Konteiner;
         var dugme=roditelj.querySelectorAll(".zaPromenuNaFormi");
 
         dugme.forEach(element => {

@@ -11,14 +11,13 @@
 .auto{
     border: 1px solid black;
     padding: 5px;
-
 }
 .Forma{
     background-color: darkred;
     display: flex;
     flex-direction: column;
     text-align: right;
-    padding: 5px;
+    padding: 10px;
     flex-grow: 1 0 193px;
     border: 1px solid black;
 }
@@ -45,6 +44,7 @@
     border-width: 2px;
     flex-wrap: wrap;
     font-style: oblique;
+    flex-grow: 1 0 193px;
 }
 .placIme{
     font-weight: bolder;
@@ -54,3 +54,9 @@
     visibility: hidden;
 
 }
+
+@media only screen and (max-width:1080px) {
+    body {
+     zoom:1.5;
+    }
+  }

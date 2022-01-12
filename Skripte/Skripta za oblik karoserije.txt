@@ -1,3 +1,6 @@
+!!!!!!!!!!!!!!!!!!!!Obavezno za rad aplikacije!!!!!!!!!!!!!!!!!!!
+===================================================================================
+
 INSERT INTO Karoserije (Naziv, Opis)
 VALUES ('Limuzina (sedan)', 'Ima četvora vrata. Prtljažnik je vizuelno jasno odvojen od ostatka automobila, ali prtljažni prostor ne mora obavezno da bude odvojen od putničkog čvrstom pregradom. Kod nekih je moguće oboriti naslon zadnjih sedišta kao kod hečbeka ili karavana i tako znatno povećati prtljažni prostor.
 
@@ -26,13 +29,19 @@ VALUES ('Pickup','Praktično terenac (SUV/džip) sa otvorenim tovarnim prostorom
 
 ==================================================================================================================================================================================================================
 
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!Opciono! Da bi se na stranici pokazalo vise entiteta!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
 INSERT INTO Placevi (Naziv, Telefon, Adresa, Kapacitet)
 VALUES ('Markovic', 0654851987, 'Jovana Jovanovica 24', 14);
 
 INSERT INTO Placevi (Naziv, Telefon, Adresa, Kapacitet)
 VALUES ('Trajkovic', 414211, 'Cara Dusana 12', 20);
 
-=================================================================================================================================================================================================================
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 INSERT INTO Prodavci (BrLicneKarte, Ime, Prezime, Telefon)
 VALUES (123456789, 'Jovan', 'Petrovic', 635124897);
 
@@ -42,7 +51,7 @@ VALUES (123456788, 'Marko', 'Markovic', 651236584);
 INSERT INTO Prodavci (BrLicneKarte, Ime, Prezime, Telefon)
 VALUES (123456787, 'Darko', 'Stankovic', 635648412);
 
-======================================
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 INSERT INTO Vozilo (Marka, Model, RegistarskaTablica, Cena, GodinaProizvodnje, Kilometraza, ZapreminaMotora,SnagaMotora, KaroserijaID, NazivPlacaID,VlasnikID)
 VALUES ('Audi', 'A3', 'BG123JX', 17995, 2017,170000,1598,110,1,1,2);
 
