@@ -10,7 +10,7 @@ using Models;
 namespace WEB_projekat.Migrations
 {
     [DbContext(typeof(AutoPlacContext))]
-    [Migration("20220107155836_v1")]
+    [Migration("20220112133243_v1")]
     partial class v1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

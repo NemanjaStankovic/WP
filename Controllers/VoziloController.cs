@@ -34,6 +34,8 @@ namespace WEBPROJEKAT.Controllers // ?????????????
                     GodinaProizvodnje=p.GodinaProizvodnje,
                     ImeVlasnika=p.Vlasnik.Ime,
                     BrojTelefona=p.Vlasnik.Telefon,
+                    Tablica=p.RegistarskaTablica,
+                    Cena=p.Cena,
 
                 })); 
         }
@@ -81,13 +83,13 @@ namespace WEBPROJEKAT.Controllers // ?????????????
             try
             {
                 var vozZaProveru=await Context.Vozila.Where(p=>p.RegistarskaTablica==Registarska_tablica).FirstOrDefaultAsync();
-                if(vozZaProveru==null){
-                    return BadRequest("Vozilo sa datom registarskom tablicom vec postoji u bazi!");
+                if(vozZaProveru!=null){
+                    return StatusCode(203,"Vozilo sa datom registarskom tablicom vec postoji u bazi!");
                 }
                 var vlasnik=await Context.Prodavci.Where(p=>p.BrLicneKarte==Vlasnik_brLicneKarte).FirstOrDefaultAsync();
                 if(vlasnik==null)
                 {
-                    return BadRequest("Proverite da li je broj licne karte ispravan ili prvo unesite vlasnika sa datim brojem!");
+                    return StatusCode(204,"Proverite da li je broj licne karte ispravan ili prvo unesite vlasnika sa datim brojem!");
                 }
                 var plac=await Context.Placevi.Where(p=>p.Naziv==Plac_naziv).FirstOrDefaultAsync();
                 var karoserija= await Context.Karoserije.Where(p=>p.Naziv==Karoserija).FirstOrDefaultAsync();
@@ -121,6 +123,8 @@ namespace WEBPROJEKAT.Controllers // ?????????????
                                               GodinaProizvodnje=p.GodinaProizvodnje,
                                               ImeVlasnika=p.Vlasnik.Ime,
                                               BrojTelefona=p.Vlasnik.Telefon,
+                                              Tablice=p.RegistarskaTablica,
+                                              Cena=p.Cena,
                                           }
                                           ).ToListAsync();
                 return Ok(sviAutomobiliVlasnika);//upise u bazu a iz bazu prepisuje ID
@@ -132,43 +136,26 @@ namespace WEBPROJEKAT.Controllers // ?????????????
             }
         }
 
-        [Route("PromeniVozilo")]
+        [Route("PromeniCenu/{cena}/{id}")]
         [HttpPut]
-        public async Task<ActionResult> Promeni([FromBody] Vozilo vozilo)
+        public async Task<ActionResult> Promeni(int cena,int id)
         {
-            if(vozilo.GodinaProizvodnje<1960 || vozilo.GodinaProizvodnje>2021)
+            if(cena<100 || cena>200000)
             {
-                return BadRequest("Godina van preporucenog opsega (1960-2021)!");
-            }
-            if(string.IsNullOrWhiteSpace(vozilo.Marka) || vozilo.Marka.Length>15)
-            {
-                return BadRequest("Pogresna ili nevalidna marka automobila!");
-            }
-            if(vozilo.Model.Length>15)
-            {
-                return BadRequest("Predug naziv modela!");
-            }
-            if(vozilo.SnagaMotora>1000 || vozilo.SnagaMotora<20)
-            {
-                return BadRequest("Snaga motora van opsega!Preporucen opseg 20-1000ks");
-            }
-            if(vozilo.ZapreminaMotora>8000 || vozilo.ZapreminaMotora<20)
-            {
-                return BadRequest("Zapremina motora van preporucenog opsega!");
+                return StatusCode(206,"Neispravna cena!");
             }
             try
             {
-                var voziloZaPromenu=await Context.Vozila.FindAsync(vozilo.ID);
-                voziloZaPromenu.Marka=vozilo.Marka;
-                voziloZaPromenu.Model=vozilo.Model;
-                voziloZaPromenu.Karoserija=vozilo.Karoserija;
-                voziloZaPromenu.Kilometraza=vozilo.Kilometraza;
-                voziloZaPromenu.GodinaProizvodnje=vozilo.GodinaProizvodnje;
-                voziloZaPromenu.ZapreminaMotora=vozilo.ZapreminaMotora;
-                voziloZaPromenu.SnagaMotora=vozilo.SnagaMotora;
-
+                var voziloZaPromenu=await Context.Vozila.FindAsync(id);
+                if(voziloZaPromenu==null)
+                {
+                    return StatusCode(207,"Vozilo je obrisano");
+                }
+                voziloZaPromenu.Cena=cena;
                 await Context.SaveChangesAsync();
-                return Ok($"Promenjeno vozilo sa ID={voziloZaPromenu.ID}");
+                
+                return Ok("Uspesno promenjen!");
+
             }
             catch(Exception e)
             {
@@ -188,6 +175,10 @@ namespace WEBPROJEKAT.Controllers // ?????????????
             try
             {
                 var vozilo=await Context.Vozila.FindAsync(id);
+                if(vozilo==null)
+                {
+                    return StatusCode(208,"Vozilo ne postoji ili je izbrisano!");
+                }
                 Context.Vozila.Remove(vozilo);
                 await Context.SaveChangesAsync();
                 return Ok($"Vozilo marke {vozilo.Marka}, model {vozilo.Model} iz {vozilo.GodinaProizvodnje}. je uspesno izbrisano");
