@@ -13,7 +13,6 @@ export class VoziloInfo{
     }
     crtaj(host){
         this.Konteiner=host.parentNode;
-        console.log(this.Konteiner);
         this.miniKontejner = document.createElement("div");
         this.miniKontejner.className="auto";
         this.miniKontejner.innerHTML=this.Marka+" " +this.Model +", "+this.GodinaProizvodnje+"<br />"+this.Tablice+" Cena: "+this.Cena+"$"+ "<br />"+this.ImeVlasnika+"-"+this.BrojTelefona;
@@ -49,9 +48,11 @@ export class VoziloInfo{
         })
     }
     promeniVozilo(){
-        console.log("eve vis:"+this.Konteiner);
-        this.Konteiner.querySelector(".tablica").value=this.Tablice;
-        this.Konteiner.querySelector(".tablica").disabled=true;
+        var upisTablice=this.Konteiner.querySelector(".tablica");
+        upisTablice.value=this.Tablice;
+        upisTablice.disabled=true;
+        //this.Konteiner.querySelector(".tablica").value=this.Tablice;
+        //this.Konteiner.querySelector(".tablica").disabled=true;
         this.Konteiner.querySelector(".Cena").value=this.Cena;
         var promena=this.Konteiner.querySelectorAll(".vidljivo");
         promena.forEach(element => {
@@ -82,7 +83,6 @@ export class VoziloInfo{
         tablica.disabled=false;
         var numbers = /^[0-9]*$/;
         var novaCena=this.Konteiner.querySelector(".Cena").value;
-        console.log("Nova cena: "+novaCena);
         if(novaCena=="" || !novaCena.match(numbers) || novaCena>200000 || novaCena<100)
             {
                 alert("Unesite novu cenu!");

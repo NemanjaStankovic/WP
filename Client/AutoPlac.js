@@ -86,13 +86,39 @@ export class AutoPlac{
         var parent=this.konteiner.querySelector(".GlavniKonteiner");;
         parent.appendChild(prikazVozila);
 
-        //var info=["Marka: ", "Model: ","Registarska tablica: ","Cena: ","Godina proizvodnje: ","Kilometraza: ","Zapremina motora: ", "Snaga motora: ", "Naziv placa: ", "brLK: "];
         red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Registarska tablica: ";
+        red.appendChild(l);
+        var reg_tablica=document.createElement("input");
+        reg_tablica.className="tablica";
+        red.appendChild(reg_tablica);
+
+        red=this.crtajRed(host);
+        l=document.createElement("label");
+        l.innerHTML="Cena: ";
+        red.appendChild(l);
+        var cena=document.createElement("input");
+        cena.className="Cena";
+        red.appendChild(cena);
+
+        var info=["Marka: ", "Model: ","Godina proizvodnje: ","Kilometraza: ","Zapremina motora: ", "Snaga motora: ", "brLK: "];
+        info.forEach(atr => {
+            red=this.crtajRed(host);
+            l=document.createElement("label");
+            l.innerHTML=atr;
+            red.appendChild(l);
+            var inp=document.createElement("input");
+            inp.className="vidljivo";
+            red.appendChild(inp);
+            
+        });
+        /*red=this.crtajRed(host);
         l=document.createElement("label");
         l.innerHTML="Marka: ";
         red.appendChild(l);
         var marka=document.createElement("input");
-        marka.className="vidljivo";
+        marka.className="vidljivo";                                        // marka,model,godina proizvodnje, kilometraza, zapremina, snaga, br licne karte
         red.appendChild(marka);
 
         red=this.crtajRed(host);
@@ -100,7 +126,7 @@ export class AutoPlac{
         l.innerHTML="Model: ";
         red.appendChild(l);
         var model=document.createElement("input");
-        model.className="vidljivo";
+        model.className="vidljivo";                                        //model
         red.appendChild(model);
 
         red=this.crtajRed(host);
@@ -124,7 +150,7 @@ export class AutoPlac{
         l.innerHTML="Godina proizvodnje: ";
         red.appendChild(l);
         var godina_proiz=document.createElement("input");
-        godina_proiz.className="vidljivo";
+        godina_proiz.className="vidljivo";                                //godina_proiz
         red.appendChild(godina_proiz);
 
         red=this.crtajRed(host);
@@ -151,20 +177,13 @@ export class AutoPlac{
         snaga_motora.className="vidljivo";
         red.appendChild(snaga_motora);
 
-       /* red=this.crtajRed(host);
-        l=document.createElement("label");
-        l.innerHTML="Naziv placa: ";
-        red.appendChild(l);
-        var naziv_placa=document.createElement("input");
-        red.appendChild(naziv_placa);*/
-
         red=this.crtajRed(host);
         l=document.createElement("label");
         l.innerHTML="Broj licne karte: ";
         red.appendChild(l);
         var vlasnik_brLK=document.createElement("input");
         vlasnik_brLK.className="vidljivo";
-        red.appendChild(vlasnik_brLK);
+        red.appendChild(vlasnik_brLK);*/
 
         red=this.crtajRed(host);
         red.className="Dugmici";
@@ -172,12 +191,18 @@ export class AutoPlac{
         btnDodaj.innerHTML="Dodaj";
         btnDodaj.className="vidljivo";
         red.appendChild(btnDodaj);
-        btnDodaj.onclick=(ev)=>this.dodajVozilo(marka.value, model.value, reg_tablica.value, cena.value, godina_proiz.value, kilometraza.value, zap_motora.value, snaga_motora.value, this.naziv, vlasnik_brLK.value);
-
+        //btnDodaj.onclick=(ev)=>this.dodajVozilo(marka.value, model.value, reg_tablica.value, cena.value, godina_proiz.value, kilometraza.value, zap_motora.value, snaga_motora.value, this.naziv, vlasnik_brLK.value);
+        btnDodaj.onclick=(ev)=>this.zaDodavanje(reg_tablica.value,cena.value,this.vratiListu())
         var opis=document.createElement("div");
         opis.innerHTML="";
         opis.className="Opis";
         this.konteiner.appendChild(opis);
+    }
+    zaDodavanje(tab,cena,lista){
+        this.dodajVozilo(lista[0].value,lista[1].value,tab,cena,lista[2].value,lista[3].value,lista[4].value,lista[5].value,this.naziv, lista[6].value);
+    }
+    vratiListu(){
+        return this.konteiner.querySelectorAll("input.vidljivo");
     }
     pretraziPoOblikuKaroserije(){
         let optionEl = this.konteiner.querySelector("select");
@@ -303,7 +328,6 @@ export class AutoPlac{
                 return;
             }
         }
-        //naziv placa ? ? ? ?
         if(!vlasnik_brLK.match(numbers) || vlasnik_brLK=="")
         {
             alert("BRLK vlasnika sme da sadrzi samo cifre!");
