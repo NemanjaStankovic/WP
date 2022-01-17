@@ -30,7 +30,6 @@ export class VoziloInfo{
         btnPromeni.onclick=(ev)=>this.promeniVozilo();
     }
     obrisiVozilo(){
-        console.log(this.ID);
         fetch("https://localhost:5001/Vozilo/IzbrisiVozilo/"+this.ID,
         {
             method:"DELETE"
@@ -51,8 +50,6 @@ export class VoziloInfo{
         var upisTablice=this.Konteiner.querySelector(".tablica");
         upisTablice.value=this.Tablice;
         upisTablice.disabled=true;
-        //this.Konteiner.querySelector(".tablica").value=this.Tablice;
-        //this.Konteiner.querySelector(".tablica").disabled=true;
         this.Konteiner.querySelector(".Cena").value=this.Cena;
         var promena=this.Konteiner.querySelectorAll(".vidljivo");
         promena.forEach(element => {
@@ -99,7 +96,7 @@ export class VoziloInfo{
                     this.Cena=novaCena;
                     var pom=this.miniKontejner;
                     var roditelj=this.Konteiner.querySelector(".PrikazVozila");
-                    this.crtaj(roditelj);               //ovo jebe!
+                    this.crtaj(roditelj);               
                     pom.replaceWith(this.miniKontejner);
 
                 }
@@ -116,23 +113,14 @@ export class VoziloInfo{
             })
 
         }
-        /*this.Cena=novaCena;
-        var pom=this.miniKontejner;
-        var roditelj=this.Konteiner.querySelector(".PrikazVozila");
-        this.crtaj(roditelj);               
-        pom.replaceWith(this.miniKontejner);*/
+
         this.promeni();
         
     } 
     promeni()
     {
-        //var formaTablica=this.Konteiner;
         this.Konteiner.querySelector(".tablica").disabled=false;
-        /*var pom=this.miniKontejner;
-        var roditelj=this.Konteiner.querySelector(".PrikazVozila");
-        this.crtaj(roditelj);               
-        pom.replaceWith(this.miniKontejner);*/
-        //var roditelj=this.miniKontejner.parentNode.parentNode;
+
         var roditelj=this.Konteiner;
         var dugme=roditelj.querySelectorAll(".zaPromenuNaFormi");
 

@@ -12,7 +12,7 @@ export class AutoPlac{
         this.konteiner=null;
     }
     crtaj(host){
-        this.konteiner=document.createElement("div");   //cela forma
+        this.konteiner=document.createElement("div"); 
         this.konteiner.className="GlavnijiKonteiner";
         host.appendChild(this.konteiner);
 
@@ -36,20 +36,15 @@ export class AutoPlac{
         placAdresa.innerHTML="Adresa: "+this.adresa;
         placInfo.appendChild(placAdresa);
 
-        var glavniKonteiner=document.createElement("div");   //cela forma
+        var glavniKonteiner=document.createElement("div");  
         glavniKonteiner.className="GlavniKonteiner";
         this.konteiner.appendChild(glavniKonteiner);
 
-        /*let celaForma=document.createElement("div");
-        celaForma.className="CelaForma";
-        this.konteiner.appendChild(celaForma);*/
-
-
-        let kontForma=document.createElement("div");     //za formu
+        let kontForma=document.createElement("div");     
         kontForma.className="Forma";
         glavniKonteiner.appendChild(kontForma);
 
-        this.crtajFormu(kontForma);         //poziv fje za crtanje forme
+        this.crtajFormu(kontForma);         
     }
     crtajRed(host)
     {
@@ -63,17 +58,17 @@ export class AutoPlac{
         let red=this.crtajRed(host);
         let l=document.createElement("label");
         l.innerHTML="Tip karoserije: ";
-        red.appendChild(l);                    //labela se lepi za div za formu (12)
+        red.appendChild(l);                    
 
-        let se=document.createElement("select");  //kreira select element i lepi na div za formu
+        let se=document.createElement("select");  
         red.appendChild(se);
 
         let op;
-        this.listaTipovaKaroserije.forEach(tipKaroserije=>{ //objekat ima atribut listaTipovaKaroserije
-            op=document.createElement("option");           //kreiraju se opcije
+        this.listaTipovaKaroserije.forEach(tipKaroserije=>{ 
+            op=document.createElement("option");           
             op.innerHTML=tipKaroserije.naziv;
             op.value=tipKaroserije.id;
-            se.appendChild(op);              //opcije se lepe za select element
+            se.appendChild(op);              
         })
 
         let btnNadji=document.createElement("button");
@@ -113,77 +108,6 @@ export class AutoPlac{
             red.appendChild(inp);
             
         });
-        /*red=this.crtajRed(host);
-        l=document.createElement("label");
-        l.innerHTML="Marka: ";
-        red.appendChild(l);
-        var marka=document.createElement("input");
-        marka.className="vidljivo";                                        // marka,model,godina proizvodnje, kilometraza, zapremina, snaga, br licne karte
-        red.appendChild(marka);
-
-        red=this.crtajRed(host);
-        l=document.createElement("label");
-        l.innerHTML="Model: ";
-        red.appendChild(l);
-        var model=document.createElement("input");
-        model.className="vidljivo";                                        //model
-        red.appendChild(model);
-
-        red=this.crtajRed(host);
-        l=document.createElement("label");
-        l.innerHTML="Registarska tablica: ";
-        red.appendChild(l);
-        var reg_tablica=document.createElement("input");
-        reg_tablica.className="tablica";
-        red.appendChild(reg_tablica);
-
-        red=this.crtajRed(host);
-        l=document.createElement("label");
-        l.innerHTML="Cena: ";
-        red.appendChild(l);
-        var cena=document.createElement("input");
-        cena.className="Cena";
-        red.appendChild(cena);
-
-        red=this.crtajRed(host);
-        l=document.createElement("label");
-        l.innerHTML="Godina proizvodnje: ";
-        red.appendChild(l);
-        var godina_proiz=document.createElement("input");
-        godina_proiz.className="vidljivo";                                //godina_proiz
-        red.appendChild(godina_proiz);
-
-        red=this.crtajRed(host);
-        l=document.createElement("label");
-        l.innerHTML="Kilometraza: ";
-        red.appendChild(l);
-        var kilometraza=document.createElement("input");
-        kilometraza.className="vidljivo";
-        red.appendChild(kilometraza);
-
-        red=this.crtajRed(host);
-        l=document.createElement("label");
-        l.innerHTML="Zapremina motora: ";
-        red.appendChild(l);
-        var zap_motora=document.createElement("input");
-        zap_motora.className="vidljivo";
-        red.appendChild(zap_motora);
-
-        red=this.crtajRed(host);
-        l=document.createElement("label");
-        l.innerHTML="Snaga motora: ";
-        red.appendChild(l);
-        var snaga_motora=document.createElement("input");
-        snaga_motora.className="vidljivo";
-        red.appendChild(snaga_motora);
-
-        red=this.crtajRed(host);
-        l=document.createElement("label");
-        l.innerHTML="Broj licne karte: ";
-        red.appendChild(l);
-        var vlasnik_brLK=document.createElement("input");
-        vlasnik_brLK.className="vidljivo";
-        red.appendChild(vlasnik_brLK);*/
 
         red=this.crtajRed(host);
         red.className="Dugmici";
@@ -191,7 +115,6 @@ export class AutoPlac{
         btnDodaj.innerHTML="Dodaj";
         btnDodaj.className="vidljivo";
         red.appendChild(btnDodaj);
-        //btnDodaj.onclick=(ev)=>this.dodajVozilo(marka.value, model.value, reg_tablica.value, cena.value, godina_proiz.value, kilometraza.value, zap_motora.value, snaga_motora.value, this.naziv, vlasnik_brLK.value);
         btnDodaj.onclick=(ev)=>this.zaDodavanje(reg_tablica.value,cena.value,this.vratiListu())
         var opis=document.createElement("div");
         opis.innerHTML="";
@@ -220,9 +143,8 @@ export class AutoPlac{
             if(s.ok){
                 var zaVozila=this.obrisiPrethodniSadrzaj();
                 s.json().then(data=>{
-                    data.forEach(v=>{// Marka=p.Marka, Model=p.Model, GodinaProizvodnje=p.GodinaProizvodnje, ImeVlasnika=p.Vlasnik.Ime, BrojTelefona=p.Vlasnik.Telefon,
+                    data.forEach(v=>{
                         let vozilo=new VoziloInfo(v.id, v.marka, v.model, v.godinaProizvodnje, v.imeVlasnika, v.brojTelefona, v.tablica, v.cena);
-                        console.log(vozilo);
                         vozilo.crtaj(this.konteiner.querySelector(".PrikazVozila"));
                     })
                 })
@@ -350,7 +272,6 @@ export class AutoPlac{
                 var zaVozila=this.obrisiPrethodniSadrzaj();
                 s.json().then(data=>{
                     data.forEach(voz=>{
-                        console.log(voz);
                         const novoVozilo= new VoziloInfo(voz.id, voz.marka,voz.model,voz.godinaProizvodnje,voz.imeVlasnika,voz.brojTelefona,voz.tablice, voz.cena);
                         novoVozilo.crtaj(this.konteiner.querySelector(".PrikazVozila"));
                     })

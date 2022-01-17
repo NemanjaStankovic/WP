@@ -24,7 +24,5 @@ namespace Models
 
         [JsonIgnore]    
         public List<Vozilo> Vozila{ get; set; }
-
-        //public List<Prodavac> Prodavci { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace Models
         [Range(20,1000)]
         public int SnagaMotora { get; set; }
 
-        [RegularExpression("\\w+")] //slova samo
+        [RegularExpression("\\w+")] 
         [MaxLength(15)]
         public TipKaroserije Karoserija { get; set; }
 

@@ -15,7 +15,6 @@ fetch("https://localhost:5001/TipKaroserije/PreuzmiTipKaroserije")
                 placevi.forEach(el=>{
                     var autoPlac=new AutoPlac(listaTipovaK,el.id,el.naziv,el.telefon,el.adresa,el.kapacitet);
                     autoPlac.crtaj(document.body);
-                    console.log(autoPlac);
                 })
             })
         })

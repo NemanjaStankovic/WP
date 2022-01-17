@@ -30,6 +30,5 @@ namespace Models
         public string Adresa { get; set; }
         [JsonIgnore]                      
         public List<Vozilo> ListaVozila { get; set; }
-        //public AutoPlac AutoPlac { get; set; }
     }
 }

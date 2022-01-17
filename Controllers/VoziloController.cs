@@ -4,13 +4,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models;
-namespace WEBPROJEKAT.Controllers // ?????????????
+namespace WEBPROJEKAT.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class VoziloController : ControllerBase
     {
-        public AutoPlacContext Context { get; set; } //da se koristi context u kontroleru
+        public AutoPlacContext Context { get; set; } 
 
         public VoziloController(AutoPlacContext context)
         {
@@ -48,7 +48,7 @@ namespace WEBPROJEKAT.Controllers // ?????????????
                             .Include(p=>p.Vlasnik).Where(p=>p.ID==id)
                             .Include(p=>p.Karoserija)
                             .Include(p=>p.NazivPlaca);
-            var auto=await auta./*Where(p=>p.RegistarskaTablica==br_tablice).*/ToListAsync();
+            var auto=await auta.ToListAsync();
             return Ok(auto); 
         }
 
@@ -107,10 +107,7 @@ namespace WEBPROJEKAT.Controllers // ?????????????
                 novoVozilo.Vlasnik=vlasnik;
                 novoVozilo.NazivPlaca=plac;
                 Context.Vozila.Add(novoVozilo);
-                await Context.SaveChangesAsync();//moze da potraje upis u bazu; odvijace se u pozadinskoj niti
-                //alternativno Context.SaveChangesAsync(); (bez await) ce da prebaci fju na novu nit a stara ce 
-                //da nastavi da izvrsava glavni kod zbog cega ce se sledeca linija izvrsiti bez obzira na rezultat operacije
-                //vraca broj uspesno dodatih entiteta
+                await Context.SaveChangesAsync();
 
                 var sviAutomobiliVlasnika=await Context.Vozila
                                           .Include(p=>p.Vlasnik).Where(p=>p.Vlasnik==vlasnik && p.NazivPlaca==plac)
@@ -127,11 +124,11 @@ namespace WEBPROJEKAT.Controllers // ?????????????
                                               Cena=p.Cena,
                                           }
                                           ).ToListAsync();
-                return Ok(sviAutomobiliVlasnika);//upise u bazu a iz bazu prepisuje ID
+                return Ok(sviAutomobiliVlasnika);
             }
             catch(Exception e)
             {
-                return BadRequest(e.Message); //poruku iz baze vraca
+                return BadRequest(e.Message);
 
             }
         }
